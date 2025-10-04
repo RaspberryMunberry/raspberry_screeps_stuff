@@ -1,20 +1,10 @@
 let generalController = {
 
-    /*MODES : {
-        EARLY_START: 0
-    },
-
-    mode : this.MODES.EARLY_START,
-
-    larvas : {
-        molders : [],
-        ctrlkeepers : []
-    },*/
-
     cleanupCreepMemory : function(game, memory, data) {
-        if (memory.creeps.length == 0) return;
-        for (const name in memory.creeps) if (!game.creeps[name] && !game.spawns['Spawn1'].spawning.name == name) {
-            Object.values(data.larvas).forEach(arr => arr.splice(arr.indexOf(name), 1));
+        if (!memory.creeps) return;
+        for (const name in memory.creeps) if (!game.creeps[name] && !(game.spawns['Spawn1'].spawning && game.spawns['Spawn1'].spawning.name === name)) {
+            if(name.includes('T0')) Object.values(data.larvas).forEach(arr => arr.splice(arr.indexOf(name), 1));
+            else if(name.includes('T1')) Object.values(data.tier1).forEach(arr => arr.splice(arr.indexOf(name), 1));
             delete memory.creeps[name];
         }
     },    
@@ -29,13 +19,13 @@ let generalController = {
             let id = String(Date.now());
 
             if (data.larvas.molders.length < expected_molders && availableEnergy >= 200 && !game.spawns['Spawn1'].spawning) {
-                let creep_name = 'drone'+id;
+                let creep_name = 'T0_drone'+id;
                 base.spawnCreep([WORK, CARRY, MOVE], creep_name, {memory: {role: 'molder'}});
                 availableEnergy -= 200;
                 data.larvas.molders.push(creep_name);
             }
             if (data.larvas.ctrlkeepers.length < expected_keepers && availableEnergy >= 200 && !game.spawns['Spawn1'].spawning) {
-                let creep_name = 'keeper'+id;
+                let creep_name = 'T0_keeper'+id;
                 base.spawnCreep([WORK, CARRY, MOVE], creep_name, {memory: {role: 'keeper'}});
                 availableEnergy -= 200;
                 data.larvas.ctrlkeepers.push(creep_name);

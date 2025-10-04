@@ -1,5 +1,5 @@
 let roleKeeper = {
-    run: function(creep) {
+    execute: function(creep) {
 
         if(creep.memory.upgrading && creep.store[RESOURCE_ENERGY] == 0)
             creep.memory.upgrading = false;

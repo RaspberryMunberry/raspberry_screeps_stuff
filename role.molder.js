@@ -1,6 +1,6 @@
 // primitive worker
 let roleMolder = {
-    run: function(creep) {
+    execute: function(creep) {
 
         if (creep.store[RESOURCE_ENERGY] == 0) creep.memory.intension = 'extracting';
 
